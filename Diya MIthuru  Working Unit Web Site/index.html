@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1487C9">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DiyaMithuru">
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
+<link rel="apple-touch-icon" href="logo.jpeg">
+<title>DiyaMithuru</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+:root{
+  --bg:#EDF2F5; --surface:#FFFFFF; --surface-2:#F5F8FA; --line:#D6E0E6;
+  --ink:#10232F; --muted:#5A6F7D;
+  --accent:#1487C9; --accent-ink:#FFFFFF;
+  --water-top:#5BC0F2; --water-deep:#1478B8; --glass:#8FA5B3;
+  --stop:#CF3F35; --ok:#1C9A61; --warn:#C9811A;
+  --stop-soft:#FBE7E5; --warn-soft:#FBF0DD;
+  --radius:18px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A161E; --surface:#112230; --surface-2:#0E1C27; --line:#223747;
+    --ink:#E4EDF2; --muted:#8EA3B1;
+    --accent:#44AEEB; --accent-ink:#04121B;
+    --water-top:#4FB6EC; --water-deep:#15679E; --glass:#6B8494;
+    --stop:#EF5E53; --ok:#39C185; --warn:#E6A13E;
+    --stop-soft:#3A1916; --warn-soft:#3A2A12;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A161E; --surface:#112230; --surface-2:#0E1C27; --line:#223747;
+  --ink:#E4EDF2; --muted:#8EA3B1;
+  --accent:#44AEEB; --accent-ink:#04121B;
+  --water-top:#4FB6EC; --water-deep:#15679E; --glass:#6B8494;
+  --stop:#EF5E53; --ok:#39C185; --warn:#E6A13E;
+  --stop-soft:#3A1916; --warn-soft:#3A2A12;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink); font:16px/1.5 var(--body);
+  padding-inline:16px; padding-block:env(safe-area-inset-top,0px) calc(24px + env(safe-area-inset-bottom,0px));
+  -webkit-tap-highlight-color:transparent;
+}
+[hidden]{display:none!important}
+.wrap{max-width:480px; margin-inline:auto; display:flex; flex-direction:column; gap:14px}
+button{font:inherit; color:inherit; cursor:pointer}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+
+/* Top bar */
+.top{display:flex; align-items:center; gap:10px; padding-top:14px}
+.brand{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:800; font-size:1.45rem; letter-spacing:-.01em; margin:0; flex:1}
+.brand-logo{width:56px; height:56px; border-radius:12px; object-fit:contain; flex:none}
+.brand small{display:block; font:400 .78rem/1.2 var(--body); color:var(--muted); letter-spacing:0}
+.icon-btn{width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:var(--surface); display:grid; place-items:center}
+.icon-btn svg{width:22px; height:22px}
+
+.pill{display:flex; align-items:center; gap:8px; font-size:.9rem; color:var(--muted); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:8px 14px; min-height:40px}
+.dot{width:10px; height:10px; border-radius:50%; background:var(--glass); flex:none}
+.dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--stop)}
+.pill span{overflow-wrap:anywhere}
+
+/* Demo strip */
+.demo{display:flex; flex-wrap:wrap; align-items:center; gap:8px; background:var(--warn-soft); border-radius:14px; padding:10px 12px; font-size:.9rem}
+.demo strong{flex:1 1 100%; font-weight:400}
+.demo button{border:1px solid var(--line); background:var(--surface); border-radius:10px; padding:8px 12px; min-height:40px}
+
+/* Cup hero */
+.hero{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px 16px 18px; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:8px}
+.cup{width:100%; max-width:190px; justify-self:center; height:auto}
+.readout{display:flex; flex-direction:column; gap:4px; padding-right:6px; min-width:0}
+.pct{font-family:var(--display); font-weight:800; font-size:clamp(3rem,15vw,4.2rem); line-height:.95; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.pct sup{font-size:.4em; vertical-align:.95em; margin-left:2px; color:var(--muted)}
+.readout .sub{color:var(--muted); font-size:.92rem}
+.scale{display:flex; flex-direction:column; gap:2px; margin-top:10px; font-size:.78rem; color:var(--muted); font-variant-numeric:tabular-nums}
+.scale b{color:var(--ink); font-weight:700}
+
+#waterGroup{transition:transform .7s cubic-bezier(.3,.7,.3,1)}
+#wave{animation:drift 3.2s linear infinite}
+.pumping #wave{animation-duration:.9s}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-100px)}}
+#stream{opacity:0; transition:opacity .3s}
+.pumping #stream{opacity:1}
+#streamDash{animation:pour .5s linear infinite}
+@keyframes pour{to{stroke-dashoffset:-18}}
+
+/* Chips */
+.chips{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px}
+.chip{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:10px 8px; text-align:center; display:flex; flex-direction:column; gap:2px; min-width:0}
+.chip .k{font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted)}
+.chip .v{font-weight:700; font-size:.98rem}
+.chip.on{border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
+.chip.on .v{color:var(--accent)}
+.chip.alert .v{color:var(--stop)}
+
+/* Temperature card */
+.temp-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; display:flex; align-items:center; gap:14px; transition:border-color .3s, box-shadow .3s}
+.temp-card.active{border-color:var(--accent); box-shadow:0 0 12px rgba(20,135,201,.15)}
+.temp-card.hot{border-color:#ef4444; box-shadow:0 0 14px rgba(239,68,68,.25)}
+.temp-card.hot .temp-icon{background:linear-gradient(135deg, #f97316, #ef4444)}
+.temp-icon{width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, var(--water-top), var(--water-deep)); color:#fff; display:grid; place-items:center; flex:none; transition:opacity .3s}
+.temp-icon svg{width:26px; height:26px}
+.temp-readout{display:flex; flex-direction:column; gap:2px; min-width:0}
+.temp-value{font-family:var(--display); font-weight:800; font-size:1.8rem; line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.temp-value .unit{font-size:.5em; color:var(--muted); font-weight:600; margin-left:2px}
+.temp-label{color:var(--muted); font-size:.85rem}
+.temp-card.measuring .temp-icon{animation:pulse-temp 1s ease-in-out infinite}
+@keyframes pulse-temp{0%,100%{transform:scale(1); opacity:1}50%{transform:scale(.92); opacity:.5}}
+
+/* WiFi card & manager */
+.wifi-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:border-color .2s; width:100%; text-align:left; border-width:1px; border-style:solid}
+.wifi-card:hover,.wifi-card:focus-visible{border-color:var(--accent)}
+.wifi-bars{display:flex; align-items:flex-end; gap:2px; width:22px; height:18px; flex:none}
+.wifi-bars span{width:4px; border-radius:1.5px; background:var(--line); transition:background .3s}
+.wifi-bars span:nth-child(1){height:25%} .wifi-bars span:nth-child(2){height:50%} .wifi-bars span:nth-child(3){height:75%} .wifi-bars span:nth-child(4){height:100%}
+.wifi-bars.s1 span:nth-child(1){background:var(--stop)}
+.wifi-bars.s2 span:nth-child(-n+2){background:var(--warn)}
+.wifi-bars.s3 span:nth-child(-n+3){background:var(--ok)}
+.wifi-bars.s4 span{background:var(--ok)}
+.wifi-info{flex:1; min-width:0}
+.wifi-ssid{font-weight:700; font-size:.95rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.wifi-detail{font-size:.8rem; color:var(--muted)}
+.wifi-arrow{color:var(--muted); flex:none}
+.wifi-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.wifi-stat{background:var(--surface-2); border-radius:12px; padding:10px 12px}
+.wifi-stat .wk{font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted)}
+.wifi-stat .wv{font-weight:700; font-size:.9rem; word-break:break-all}
+.signal-meter{height:8px; border-radius:4px; background:var(--surface-2); overflow:hidden; margin-top:6px}
+.signal-fill{height:100%; border-radius:4px; transition:width .5s, background .3s}
+.scan-row{display:flex; gap:8px; align-items:center}
+.scan-btn{border:1px solid var(--accent); background:transparent; color:var(--accent); border-radius:10px; padding:8px 14px; font-weight:700; min-height:40px; white-space:nowrap; cursor:pointer; font:inherit}
+.scan-btn:disabled{opacity:.5; cursor:not-allowed}
+.scan-label{flex:1; font-size:.85rem; color:var(--muted)}
+.scanning .scan-btn{animation:pulse-temp 1s ease-in-out infinite}
+.net-list{max-height:200px; overflow-y:auto; display:flex; flex-direction:column; border:1px solid var(--line); border-radius:12px}
+.net-list:empty::after{content:"Tap Scan to find networks"; display:block; padding:16px; text-align:center; color:var(--muted); font-size:.9rem}
+.net-item{display:flex; align-items:center; gap:10px; padding:10px 12px; border:0; background:transparent; text-align:left; width:100%; border-bottom:1px solid var(--line); cursor:pointer; font:inherit; color:inherit}
+.net-item:last-child{border-bottom:0}
+.net-item:hover{background:var(--surface-2)}
+.net-item.current{background:var(--accent); color:var(--accent-ink)}
+.net-item .nn{flex:1; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.net-item .nr{font-size:.8rem; color:var(--muted)}
+.net-item.current .nr{color:inherit; opacity:.8}
+.net-item .nl{font-size:.75rem}
+
+.fault{display:flex; gap:12px; align-items:flex-start; background:var(--stop-soft); border-radius:14px; padding:12px 14px}
+.fault p{margin:0; flex:1}
+.fault button{border:0; background:var(--stop); color:#fff; border-radius:10px; padding:8px 14px; font-weight:700; min-height:40px}
+
+/* Controls */
+.controls{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+.ctl{border:0; border-radius:16px; min-height:64px; font-weight:700; font-size:1.05rem; letter-spacing:.04em; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; transition:transform .1s}
+.ctl:active{transform:scale(.96)}
+.ctl small{font-weight:400; font-size:.72rem; letter-spacing:0; opacity:.85}
+.ctl.on{background:var(--accent); color:var(--accent-ink)}
+.ctl.stop{background:var(--stop); color:#fff}
+.ctl.fill{background:var(--surface); color:var(--ink); border:2px solid var(--accent)}
+
+/* Voice announcements */
+.voice{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px 16px; display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center}
+.speaker{width:72px; height:72px; border-radius:50%; background:var(--surface-2); color:var(--accent); display:grid; place-items:center; border:2px solid var(--line); transition:background .2s, border-color .2s}
+.speaker svg{width:34px; height:34px}
+.speaker.talking{border-color:var(--accent); background:var(--accent); color:var(--accent-ink)}
+.speaker.talking .w1{animation:wave 1s ease-in-out infinite}
+.speaker.talking .w2{animation:wave 1s ease-in-out .2s infinite}
+@keyframes wave{50%{opacity:.25}}
+.said{min-height:1.5em; font-size:1.02rem; overflow-wrap:anywhere; max-width:34ch}
+.unlock{border:0; background:var(--accent); color:var(--accent-ink); border-radius:12px; padding:12px 18px; font-weight:700; min-height:48px}
+.switch{display:flex; align-items:center; gap:12px; width:100%; text-align:left; border-top:1px solid var(--line); padding-top:12px}
+.switch label{flex:1; cursor:pointer}
+.switch label span{display:block; color:var(--muted); font-size:.85rem}
+.switch input{width:48px; height:28px; appearance:none; background:var(--line); border-radius:999px; position:relative; cursor:pointer; flex:none; transition:background .2s}
+.switch input::after{content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#fff; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.switch input:checked{background:var(--accent)}
+.switch input:checked::after{transform:translateX(20px)}
+
+.meta{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 16px; color:var(--muted); font-size:.82rem; font-variant-numeric:tabular-nums}
+
+/* Settings sheet */
+dialog{border:0; padding:0; width:min(480px, 100%); max-width:100%; max-height:92%; margin:auto auto 0; border-radius:22px 22px 0 0; background:var(--surface); color:var(--ink)}
+@media (min-width:560px){dialog{margin:auto; border-radius:22px}}
+dialog::backdrop{background:rgba(5,15,22,.55)}
+.sheet{padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:14px}
+.sheet h2{font-family:var(--display); font-weight:800; margin:0; font-size:1.35rem}
+.sheet p{margin:0; color:var(--muted); font-size:.9rem}
+.field{display:flex; flex-direction:column; gap:6px}
+.field label{font-weight:700; font-size:.9rem}
+.field input{font:inherit; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:12px; width:100%}
+.field .help{font-size:.8rem; color:var(--muted)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.actions{display:flex; gap:10px; flex-wrap:wrap}
+.btn{border-radius:12px; padding:12px 16px; font-weight:700; min-height:48px; flex:1}
+.btn.primary{background:var(--accent); color:var(--accent-ink); border:0}
+.btn.ghost{background:transparent; border:1px solid var(--line)}
+.ferr{color:var(--stop); font-size:.88rem; margin:0}
+
+.toast{position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translate(-50%,20px); opacity:0; background:var(--ink); color:var(--bg); padding:12px 18px; border-radius:14px; font-weight:700; max-width:calc(100% - 32px); transition:opacity .2s, transform .2s; pointer-events:none; z-index:10; text-align:center}
+.toast.show{opacity:1; transform:translate(-50%,0)}
+
+@media (max-width:360px){ .hero{grid-template-columns:1fr} .readout{align-items:center; text-align:center; padding:0} }
+@media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1 class="brand"><img src="logo.jpeg" alt="DiyaMithuru logo" class="brand-logo"><span>DiyaMithuru<small>Smart refilling cup</small></span></h1>
+    <button class="icon-btn" id="openSettings" aria-label="Connection settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </header>
+
+  <div class="pill" role="status"><i class="dot" id="connDot"></i><span id="connText">Starting...</span></div>
+
+  <div class="demo" id="demoBar" hidden>
+    <strong>Demo mode: a simulated cup, not your device. Open settings to connect your HiveMQ cluster.</strong>
+    <button id="demoCup">Lift cup</button>
+    <button id="demoDrink">Take a sip</button>
+  </div>
+
+  <section class="hero" id="hero" aria-label="Cup level">
+    <svg class="cup" viewBox="0 0 200 240" role="img" aria-labelledby="cupTitle">
+      <title id="cupTitle">Cup water level</title>
+      <defs>
+        <clipPath id="cupClip"><path d="M24 26 H176 L158 226 Q157 234 149 234 H51 Q43 234 42 226 Z"/></clipPath>
+        <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style="stop-color:var(--water-top)"/>
+          <stop offset="1" style="stop-color:var(--water-deep)"/>
+        </linearGradient>
+      </defs>
+      <!-- pump stream from the nozzle above -->
+      <g id="stream">
+        <rect x="92" y="0" width="16" height="10" rx="3" style="fill:var(--glass)"/>
+        <line id="streamDash" x1="100" y1="12" x2="100" y2="220" style="stroke:var(--water-top)" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 8"/>
+      </g>
+      <g clip-path="url(#cupClip)">
+        <g id="waterGroup" style="transform:translateY(240px)">
+          <path id="wave" fill="url(#waterGrad)" d="M0 8 Q25 0 50 8 T100 8 T150 8 T200 8 T250 8 T300 8 V260 H0 Z"/>
+        </g>
+      </g>
+      <!-- full / low marks -->
+      <line id="markFull" x1="170" x2="184" style="stroke:var(--muted)" stroke-width="2"/>
+      <line id="markLow" x1="163" x2="177" style="stroke:var(--muted)" stroke-width="2"/>
+      <path id="glass" d="M24 26 H176 L158 226 Q157 234 149 234 H51 Q43 234 42 226 Z" fill="none" style="stroke:var(--glass)" stroke-width="5" stroke-linejoin="round"/>
+    </svg>
+    <div class="readout">
+      <div class="pct" id="pct">--</div>
+      <div class="sub" id="pctSub">Waiting for the cup</div>
+      <div class="scale">
+        <div>Pump starts at <b>30%</b></div>
+        <div>Pump stops at <b>90%</b></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="chips">
+    <div class="chip" id="chipCup"><span class="k">Cup</span><span class="v">--</span></div>
+    <div class="chip" id="chipPump"><span class="k">Pump</span><span class="v">--</span></div>
+    <div class="chip" id="chipMode"><span class="k">Auto-fill</span><span class="v">--</span></div>
+  </div>
+
+  <section class="temp-card" id="tempCard" aria-label="Drink temperature">
+    <div class="temp-icon" id="tempIcon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/><circle cx="11.5" cy="17.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+    </div>
+    <div class="temp-readout">
+      <div class="temp-value" id="tempValue">--</div>
+      <div class="temp-label" id="tempLabel">Fill the cup to measure temperature</div>
+    </div>
+  </section>
+
+  <div class="fault" id="fault" hidden>
+    <p id="faultText"></p>
+    <button id="faultOn">ON</button>
+  </div>
+
+  <div class="controls">
+    <button class="ctl on" data-cmd="ON">ON<small>Auto-fill</small></button>
+    <button class="ctl stop" data-cmd="STOP">STOP<small>Pump off</small></button>
+    <button class="ctl fill" data-cmd="FILL">FILL<small>Top up now</small></button>
+  </div>
+
+  <section class="voice" aria-label="Voice announcements">
+    <div class="speaker" id="speaker" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path class="w1" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="w2" d="M19 5a10 10 0 0 1 0 14"/></svg>
+    </div>
+    <div class="said" id="said" aria-live="polite">The phone will say out loud when the pump starts, stops, or the cup is full.</div>
+    <button class="unlock" id="unlock" hidden>Tap to turn on voice</button>
+    <div class="switch">
+      <label for="voiceOn">Voice announcements<span>Speaks automatically. No need to talk to it.</span></label>
+      <input type="checkbox" id="voiceOn" role="switch" checked>
+    </div>
+  </section>
+
+  <button class="wifi-card" id="wifiCard" aria-label="WiFi status — tap to manage">
+    <div class="wifi-bars" id="wifiBars"><span></span><span></span><span></span><span></span></div>
+    <div class="wifi-info">
+      <div class="wifi-ssid" id="wifiSsid">Not connected</div>
+      <div class="wifi-detail" id="wifiDetail">Tap to manage WiFi</div>
+    </div>
+    <div class="wifi-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+  </button>
+
+  <div class="meta" id="meta"></div>
+</div>
+
+<dialog id="settings">
+  <form class="sheet" id="settingsForm" method="dialog">
+    <h2>Connect your cup</h2>
+    <p>Enter your HiveMQ Cloud details. Use the <b>app</b> login, not the ESP32 one. They are saved only on this phone.</p>
+    <div class="field">
+      <label for="fHost">Cluster URL</label>
+      <input id="fHost" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="abc123.s1.eu.hivemq.cloud" required>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="fPort">WebSocket port</label>
+        <input id="fPort" inputmode="numeric" value="8884" required>
+      </div>
+      <div class="field">
+        <label for="fDevice">Device ID</label>
+        <input id="fDevice" autocapitalize="off" value="cup01" required>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fUser">Username</label>
+      <input id="fUser" autocomplete="username" autocapitalize="off" required>
+    </div>
+    <div class="field">
+      <label for="fPass">Password</label>
+      <input id="fPass" type="password" autocomplete="current-password" required>
+      <span class="help">Port 8884 is HiveMQ Cloud's secure WebSocket port. Device ID must match DEVICE_ID in the ESP32 code.</span>
+    </div>
+    <p class="ferr" id="ferr" hidden></p>
+    <div class="actions">
+      <button type="button" class="btn ghost" id="useDemo">Try demo</button>
+      <button type="submit" class="btn primary">Save &amp; connect</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="wifiDialog">
+  <div class="sheet">
+    <h2>WiFi Manager</h2>
+    <p>Manage the ESP32's WiFi connection. Changes are sent to the device via MQTT.</p>
+    <div class="wifi-grid">
+      <div class="wifi-stat"><span class="wk">Network</span><div class="wv" id="wdSsid">--</div></div>
+      <div class="wifi-stat"><span class="wk">Signal</span><div class="wv" id="wdSignal">--</div></div>
+      <div class="wifi-stat"><span class="wk">IP Address</span><div class="wv" id="wdIp">--</div></div>
+      <div class="wifi-stat"><span class="wk">Channel</span><div class="wv" id="wdCh">--</div></div>
+    </div>
+    <div>
+      <div style="font-weight:700; font-size:.9rem">Signal Strength</div>
+      <div class="signal-meter"><div class="signal-fill" id="wdMeter"></div></div>
+    </div>
+    <div class="scan-row" id="scanRow">
+      <button class="scan-btn" id="scanBtn" type="button">Scan</button>
+      <span class="scan-label" id="scanLabel">Find available networks</span>
+    </div>
+    <div class="net-list" id="netList"></div>
+    <details id="wifiManual">
+      <summary style="font-weight:700; font-size:.9rem; cursor:pointer; padding:4px 0">Connect to a different network</summary>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px">
+        <div class="field"><label for="wfSsid">WiFi Name (SSID)</label><input id="wfSsid" autocomplete="off" autocapitalize="off" placeholder="Your network name"></div>
+        <div class="field"><label for="wfPass">WiFi Password</label><input id="wfPass" type="password" autocomplete="off" placeholder="Network password"></div>
+        <button class="btn primary" id="wfApply" type="button">Send to Device</button>
+        <span class="help">The ESP32 will restart and connect to the new network. You may lose connection briefly.</span>
+      </div>
+    </details>
+    <div class="actions"><button class="btn ghost" id="wifiClose" type="button">Close</button></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const LOW = 30, FULL = 90;
+
+  // ---------- saved settings (this browser only) ----------
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("diyamithuru." + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem("diyamithuru." + k, JSON.stringify(v)); } catch {} },
+  };
+  let cfg = store.get("cfg", { host: "b5ad82f71b0d40d6bcf02b00ce1cd933.s1.eu.hivemq.cloud", port: 8884, user: "Diyamithuru", pass: "diyamithuru", device: "cup01" });
+
+  // ---------- live state ----------
+  let state = { cup: false, level: 0, distance: -1, levelValid: false, pump: false, mode: "AUTO", fill: false, fault: "", rssi: 0, temp: 0, wifi_ssid: "", wifi_ip: "", wifi_ch: 0 };
+  let conn = "idle";          // idle | connecting | connected | offline | error | demo
+  let connError = "";
+  let deviceOnline = false;
+  let lastUpdate = 0;
+  let client = null;
+  let demo = null;
+  let wifiNetworks = [];
+  let wifiScanning = false;
+
+  const base = () => "diyamithuru/" + cfg.device;
+
+  // ---------- rendering ----------
+  const CUP_TOP = 26, CUP_BOTTOM = 234;
+  const levelToY = (pct) => CUP_TOP + (1 - pct / 100) * (CUP_BOTTOM - CUP_TOP);
+  // full/low tick marks on the glass
+  (function placeMarks() {
+    for (const [id, pct] of [["markFull", FULL], ["markLow", LOW]]) {
+      const y = levelToY(pct);
+      const el = document.getElementById(id);
+      const xEdge = 176 - (y - 26) * (18 / 200);
+      el.setAttribute("y1", y); el.setAttribute("y2", y);
+      el.setAttribute("x1", xEdge - 4); el.setAttribute("x2", xEdge + 10);
+    }
+  })();
+
+  function setChip(id, value, cls) {
+    const el = document.getElementById(id);
+    el.className = "chip" + (cls ? " " + cls : "");
+    el.querySelector(".v").textContent = value;
+  }
+
+  function render() {
+    const s = state;
+    const live = conn === "demo" || (conn === "connected" && deviceOnline);
+
+    // connection pill
+    const dot = $("#connDot"), txt = $("#connText");
+    const map = {
+      idle: ["", "Not set up. Open settings to connect."],
+      connecting: ["warn", "Connecting to HiveMQ..."],
+      connected: deviceOnline ? ["ok", "Cup online"] : ["warn", "Connected. Waiting for the cup device (" + cfg.device + ")..."],
+      offline: ["bad", "Offline. Retrying..."],
+      error: ["bad", connError || "Could not connect."],
+      demo: ["warn", "Demo mode"],
+    };
+    const [cls, label] = map[conn] || map.idle;
+    dot.className = "dot " + cls;
+    txt.textContent = label;
+    $("#demoBar").hidden = conn !== "demo";
+
+    // cup
+    const level = live && s.cup && s.levelValid ? s.level : 0;
+    const y = live && s.cup ? levelToY(level) - 8 : 250;
+    $("#waterGroup").style.transform = "translateY(" + y + "px)";
+    $("#hero").classList.toggle("pumping", live && s.pump);
+    $("#glass").setAttribute("stroke-dasharray", live && s.cup ? "none" : "12 9");
+
+    const pct = $("#pct"), sub = $("#pctSub");
+    if (!live) { pct.innerHTML = "--"; sub.textContent = conn === "connected" ? "Cup device is offline" : "Not connected"; }
+    else if (!s.cup) { pct.innerHTML = "--"; sub.textContent = "Place a cup on the stand"; }
+    else if (!s.levelValid) { pct.innerHTML = "--"; sub.textContent = "Level sensor not reading"; }
+    else {
+      pct.innerHTML = s.level + "<sup>%</sup>";
+      sub.textContent = s.pump ? "Filling..." : s.mode === "PAUSED" ? "Paused" : s.level <= LOW ? "Low. Refilling soon" : s.level >= FULL ? "Full" : "Good level";
+    }
+
+    // chips
+    if (!live) { setChip("chipCup", "--"); setChip("chipPump", "--"); setChip("chipMode", "--"); }
+    else {
+      setChip("chipCup", s.cup ? "Placed" : "None", s.cup ? "" : "alert");
+      setChip("chipPump", s.pump ? "Running" : "Off", s.pump ? "on" : "");
+      setChip("chipMode", s.mode === "PAUSED" ? "Paused" : "On", s.mode === "PAUSED" ? "alert" : "");
+    }
+
+    // temperature card
+    const tc = $("#tempCard");
+    if (!live) {
+      tc.className = "temp-card";
+      $("#tempValue").innerHTML = "--";
+      $("#tempLabel").textContent = "Fill the cup to measure temperature";
+    } else if (s.temp > 0) {
+      const isHot = s.temp >= 50;
+      tc.className = "temp-card active" + (isHot ? " hot" : "");
+      $("#tempValue").innerHTML = s.temp.toFixed(1) + '<span class="unit">°C</span>';
+      $("#tempLabel").textContent = isHot ? "Hot drink warning · MLX90614" : (s.cup ? "Drink temperature · MLX90614" : "Last measured · MLX90614");
+    } else if (!s.cup) {
+      tc.className = "temp-card";
+      $("#tempValue").innerHTML = "--";
+      $("#tempLabel").textContent = "Fill the cup to measure temperature";
+    } else if (s.levelValid && s.level >= FULL && !s.pump) {
+      tc.className = "temp-card measuring";
+      $("#tempValue").innerHTML = "···";
+      $("#tempLabel").textContent = "Measuring temperature in 2s...";
+    } else {
+      tc.className = "temp-card";
+      $("#tempValue").innerHTML = "--";
+      $("#tempLabel").textContent = s.pump ? "Filling cup..." : "Fill the cup to measure";
+    }
+
+    // faults
+    const f = live ? s.fault : "";
+    $("#fault").hidden = !f;
+    if (f === "TIMEOUT") { $("#faultText").textContent = "The pump ran too long without the cup filling. Check the water tank and tube, then press ON."; $("#faultOn").hidden = false; }
+    if (f === "SENSOR") { $("#faultText").textContent = "The level sensor is not reading. Check the ultrasonic sensor wiring."; $("#faultOn").hidden = true; }
+
+    // wifi card
+    const rssi = live ? s.rssi : 0;
+    const bars = !rssi ? 0 : rssi >= -50 ? 4 : rssi >= -60 ? 3 : rssi >= -70 ? 2 : 1;
+    $("#wifiBars").className = "wifi-bars" + (bars ? " s" + bars : "");
+    $("#wifiSsid").textContent = live && s.wifi_ssid ? s.wifi_ssid : (live ? "Connected" : "Not connected");
+    $("#wifiDetail").textContent = live
+      ? (s.wifi_ip || "--") + (rssi ? "  ·  " + rssi + " dBm" : "")
+      : "Tap to manage WiFi";
+
+    // meta line
+    const bits = [];
+    if (live && s.distance > 0) bits.push("Sensor " + s.distance.toFixed(1) + " cm");
+    if (live && s.rssi) bits.push("Wi-Fi " + s.rssi + " dBm");
+    if (lastUpdate) bits.push("Updated " + new Date(lastUpdate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+    $("#meta").textContent = bits.join("  ·  ");
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    const t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  // ---------- commands ----------
+  const LABELS = { ON: "Auto-fill on", STOP: "Stopped", FILL: "Filling now" };
+  function send(cmd, heard) {
+    let ok = false;
+    if (conn === "demo" && demo) { demoCommand(cmd); ok = true; }
+    else if (client && client.connected) { client.publish(base() + "/cmd", cmd, { qos: 1 }); ok = true; }
+    if (navigator.vibrate) { try { navigator.vibrate(cmd === "STOP" ? [60, 40, 60] : 40); } catch {} }
+    toast(ok ? (heard ? "“" + heard.trim() + "” → " + LABELS[cmd] : LABELS[cmd]) : "Not connected. Command not sent.");
+  }
+  document.querySelectorAll("[data-cmd]").forEach((b) => b.addEventListener("click", () => send(b.dataset.cmd)));
+  $("#faultOn").addEventListener("click", () => send("ON"));
+
+  // ---------- MQTT (HiveMQ Cloud over secure WebSocket) ----------
+  function cleanHost(h) {
+    return (h || "").trim().replace(/^[a-z]+:\/\//i, "").replace(/[\/:].*$/, "");
+  }
+
+  function disconnect() {
+    if (client) { try { client.end(true); } catch {} client = null; }
+    stopDemo();
+    deviceOnline = false;
+    prevState = null;
+  }
+
+  function connect() {
+    disconnect();
+    if (!cfg.host || !cfg.user || !cfg.pass) { startDemo(); return; }
+    const lib = window.mqtt && (window.mqtt.connect ? window.mqtt : window.mqtt.default);
+    if (!lib) { conn = "error"; connError = "Could not load the MQTT library. Check your internet and reload."; render(); return; }
+
+    conn = "connecting"; connError = ""; render();
+    const url = "wss://" + cfg.host + ":" + cfg.port + "/mqtt";
+    client = lib.connect(url, {
+      username: cfg.user,
+      password: cfg.pass,
+      clientId: "diyamithuru-web-" + Math.random().toString(16).slice(2, 10),
+      clean: true,
+      reconnectPeriod: 4000,
+      connectTimeout: 10000,
+      keepalive: 30,
+    });
+    const c = client;
+    c.on("connect", () => {
+      if (c !== client) return;
+      conn = "connected";
+      c.subscribe([base() + "/status", base() + "/online", base() + "/wifi"], { qos: 1 });
+      c.publish(base() + "/cmd", "PING", { qos: 1 });
+      render();
+    });
+    c.on("reconnect", () => { if (c === client && conn !== "error") { conn = "connecting"; render(); } });
+    c.on("offline", () => { if (c === client && conn !== "error") { conn = "offline"; render(); } });
+    c.on("error", (e) => {
+      if (c !== client) return;
+      const m = String((e && e.message) || e);
+      if (/not authori[sz]ed|bad user/i.test(m)) {
+        conn = "error"; connError = "Wrong username or password. Check settings.";
+        try { c.end(true); } catch {}
+      } else { connError = m; }
+      render();
+    });
+    c.on("message", (topic, payload) => {
+      if (c !== client) return;
+      const text = payload.toString();
+      if (topic === base() + "/online") deviceOnline = text.trim() === "1";
+      else if (topic === base() + "/status") {
+        try { applyState(Object.assign({}, state, JSON.parse(text))); deviceOnline = true; lastUpdate = Date.now(); } catch {}
+      } else if (topic === base() + "/wifi") {
+        try { wifiNetworks = JSON.parse(text); wifiScanning = false; renderWifiDialog(); } catch {}
+      }
+      render();
+    });
+  }
+
+  // ---------- demo simulator (same rules as the ESP32) ----------
+  function startDemo() {
+    stopDemo();
+    conn = "demo";
+    demo = { cup: true, level: 34, pump: false, mode: "AUTO", fill: false, placedAt: Date.now() - 2000, temp: 0, tempRead: false, tempTimer: null };
+    demo.timer = setInterval(tickDemo, 250);
+    tickDemo();
+  }
+  function stopDemo() { if (demo) { clearInterval(demo.timer); if (demo.tempTimer) clearTimeout(demo.tempTimer); demo = null; } }
+  function tickDemo() {
+    const d = demo;
+    if (d.pump) d.level = Math.min(100, d.level + 1.8);
+    else if (d.cup && d.level > 0) d.level = Math.max(0, d.level - 0.05);
+    let want = d.pump;
+    if (d.mode === "PAUSED" || !d.cup) { want = false; d.fill = false; }
+    else if (Date.now() - d.placedAt < 800) want = false;
+    else if (d.level >= FULL) { want = false; d.fill = false; }
+    else if (d.fill || d.level <= LOW) want = true;
+    d.pump = want;
+    // Temperature reading after cup is full (simulates MLX90614)
+    if (d.cup && Math.round(d.level) >= FULL && !d.pump && !d.tempRead && !d.tempTimer) {
+      d.tempTimer = setTimeout(() => {
+        if (!demo) return;
+        d.tempRead = true;
+        d.temp = 28 + Math.random() * 14; // simulate 28–42 °C
+        tickDemo();
+      }, 1500);
+    }
+    if (!d.cup) {
+      d.tempRead = false; d.temp = 0;
+      if (d.tempTimer) { clearTimeout(d.tempTimer); d.tempTimer = null; }
+    }
+    applyState({ cup: d.cup, level: Math.round(d.level), distance: 12 - (d.level / 100) * 8, levelValid: true,
+              pump: d.pump, mode: d.mode, fill: d.fill, fault: "", rssi: -58, temp: d.tempRead ? d.temp : 0,
+              wifi_ssid: "HomeWiFi_5G", wifi_ip: "192.168.1.42", wifi_ch: 6 });
+    lastUpdate = Date.now();
+    render();
+  }
+  function demoCommand(cmd) {
+    if (cmd === "STOP") { demo.mode = "PAUSED"; demo.fill = false; demo.pump = false; }
+    if (cmd === "ON") demo.mode = "AUTO";
+    if (cmd === "FILL") { demo.mode = "AUTO"; demo.fill = true; demo.tempRead = false; demo.temp = 0; if (demo.tempTimer) { clearTimeout(demo.tempTimer); demo.tempTimer = null; } }
+    tickDemo();
+  }
+  $("#demoCup").addEventListener("click", () => {
+    if (!demo) return;
+    demo.cup = !demo.cup;
+    if (demo.cup) { demo.placedAt = Date.now(); demo.fill = true; demo.tempRead = false; demo.temp = 0; if (demo.tempTimer) { clearTimeout(demo.tempTimer); demo.tempTimer = null; } }   // fills to full on placement
+    $("#demoCup").textContent = demo.cup ? "Lift cup" : "Place cup";
+    tickDemo();
+  });
+  $("#demoDrink").addEventListener("click", () => { if (demo && demo.cup) { demo.level = Math.max(0, demo.level - 22); tickDemo(); } });
+
+  // ---------- automatic voice announcements (phone speaks) ----------
+  const synth = window.speechSynthesis;
+  let voiceOn = store.get("voiceOn", true);
+  let voiceReady = false;           // browsers only allow speech after a first tap
+  let voicesLoaded = false;
+  let prevState = null;             // last state we announced from
+  const saidEl = $("#said"), unlockBtn = $("#unlock"), voiceToggle = $("#voiceOn");
+  voiceToggle.checked = voiceOn;
+
+  // Chrome loads voices asynchronously
+  function loadVoices() {
+    if (!synth) return;
+    if (synth.getVoices().length) voicesLoaded = true;
+  }
+  loadVoices();
+  if (synth && synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  function pickVoice() {
+    if (!synth) return null;
+    const vs = synth.getVoices();
+    return vs.find((v) => /en[-_](US|GB|IN)/i.test(v.lang) && /female|samantha|google/i.test(v.name))
+        || vs.find((v) => /^en/i.test(v.lang)) || null;
+  }
+  function speak(text) {
+    saidEl.textContent = "“" + text + "”";
+    $("#speaker").classList.add("talking");
+    if (!synth || !voiceOn || !voiceReady) { setTimeout(() => $("#speaker").classList.remove("talking"), 1200); return; }
+    // Chrome bug fix: cancel previous + short delay before speaking
+    synth.cancel();
+    setTimeout(() => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US"; u.rate = 1; u.pitch = 1; u.volume = 1;
+      const v = pickVoice(); if (v) u.voice = v;
+      u.onend = u.onerror = () => $("#speaker").classList.remove("talking");
+      synth.speak(u);
+    }, 80);
+  }
+  function unlockVoice() {
+    if (voiceReady || !synth) return;
+    voiceReady = true;
+    try { const d = new SpeechSynthesisUtterance("ready"); d.volume = 0.01; d.rate = 10; synth.speak(d); } catch {}
+    renderVoice();
+  }
+  function renderVoice() {
+    unlockBtn.hidden = !synth || !voiceOn || voiceReady;
+    if (!synth) saidEl.textContent = "This browser cannot speak. Try Chrome or Safari.";
+  }
+  // Any first tap on the page unlocks speech
+  ["pointerdown", "keydown", "touchstart", "click"].forEach((ev) => document.addEventListener(ev, unlockVoice, { once: true, capture: true }));
+  unlockBtn.addEventListener("click", () => { unlockVoice(); setTimeout(() => speak("Voice announcements are on."), 200); });
+  voiceToggle.addEventListener("change", () => {
+    voiceOn = voiceToggle.checked; store.set("voiceOn", voiceOn);
+    if (!voiceOn && synth) synth.cancel();
+    renderVoice();
+    if (voiceOn) { unlockVoice(); setTimeout(() => speak("Voice announcements are on."), 200); }
+  });
+  // Tap the speaker icon to test voice
+  $("#speaker").addEventListener("click", () => {
+    unlockVoice();
+    setTimeout(() => speak("DiyaMithuru voice test. Speaker is working."), 200);
+  });
+
+  // Decide what to say when the cup's state changes
+  function announce(prev, s) {
+    if (!prev) return;
+    const out = [];
+    if (!prev.cup && s.cup) out.push("Cup detected.");
+    if (prev.cup && !s.cup) out.push(prev.pump ? "Cup removed. Pump off." : "Cup removed.");
+    if (s.fault && s.fault !== prev.fault) {
+      out.push(s.fault === "TIMEOUT"
+        ? "Warning. Pump stopped. No water is reaching the cup. Please check the water tank."
+        : "Warning. The level sensor is not reading.");
+    }
+    if (!prev.pump && s.pump) out.push("Pump on. Filling your cup.");
+    if (prev.pump && !s.pump && s.cup && !s.fault) {
+      if (s.mode === "PAUSED") out.push("Pump stopped.");
+      else if (s.levelValid && s.level >= FULL) out.push("Your cup is full. Pump off.");
+      else out.push("Pump off.");
+    }
+    if (prev.mode !== s.mode) {
+      if (s.mode === "AUTO") out.push("Auto fill is on.");
+      else if (!(prev.pump && !s.pump)) out.push("Auto fill stopped.");
+    }
+    if (s.temp > 0 && (!prev.temp || prev.temp === 0)) {
+      if (s.temp >= 50) {
+        out.push("Warning. Liquid is hot! Drink temperature is " + s.temp.toFixed(1) + " degrees Celsius.");
+      } else {
+        out.push("Drink temperature is " + s.temp.toFixed(1) + " degrees Celsius.");
+      }
+    }
+    if (out.length) speak(out.join(" "));
+  }
+  function applyState(next) {
+    announce(prevState, next);
+    prevState = Object.assign({}, next);
+    state = next;
+  }
+  renderVoice();
+
+  // ---------- settings sheet ----------
+  const dlg = $("#settings");
+  function openSettings() {
+    $("#fHost").value = cfg.host; $("#fPort").value = cfg.port; $("#fDevice").value = cfg.device;
+    $("#fUser").value = cfg.user; $("#fPass").value = cfg.pass;
+    $("#ferr").hidden = true;
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+  }
+  $("#openSettings").addEventListener("click", openSettings);
+  $("#settingsForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const host = cleanHost($("#fHost").value);
+    const port = parseInt($("#fPort").value, 10);
+    if (!host || !port) { $("#ferr").textContent = "Enter the cluster URL and port."; $("#ferr").hidden = false; return; }
+    cfg = { host, port, device: $("#fDevice").value.trim() || "cup01", user: $("#fUser").value.trim(), pass: $("#fPass").value };
+    store.set("cfg", cfg);
+    dlg.close();
+    connect();
+  });
+  $("#useDemo").addEventListener("click", () => { dlg.close(); disconnect(); startDemo(); });
+
+  // ---------- WiFi manager ----------
+  const wDlg = $("#wifiDialog");
+  function rssiToPercent(r) { return r ? Math.min(100, Math.max(0, 2 * (r + 100))) : 0; }
+  function rssiColor(r) { return r >= -50 ? "var(--ok)" : r >= -65 ? "var(--warn)" : "var(--stop)"; }
+  function rssiLabel(r) { return !r ? "--" : (r >= -50 ? "Excellent" : r >= -60 ? "Good" : r >= -70 ? "Fair" : "Weak") + " (" + r + " dBm)"; }
+
+  function renderWifiDialog() {
+    const s = state;
+    const live = conn === "demo" || (conn === "connected" && deviceOnline);
+    $("#wdSsid").textContent = live && s.wifi_ssid ? s.wifi_ssid : "--";
+    $("#wdSignal").textContent = live ? rssiLabel(s.rssi) : "--";
+    $("#wdIp").textContent = live && s.wifi_ip ? s.wifi_ip : "--";
+    $("#wdCh").textContent = live && s.wifi_ch ? s.wifi_ch : "--";
+    const pct = rssiToPercent(live ? s.rssi : 0);
+    $("#wdMeter").style.width = pct + "%";
+    $("#wdMeter").style.background = live ? rssiColor(s.rssi) : "var(--line)";
+    $("#scanRow").classList.toggle("scanning", wifiScanning);
+    $("#scanBtn").disabled = wifiScanning;
+    $("#scanLabel").textContent = wifiScanning ? "Scanning..." : wifiNetworks.length ? wifiNetworks.length + " networks found" : "Find available networks";
+    // network list
+    const list = $("#netList");
+    list.innerHTML = "";
+    wifiNetworks.forEach((n) => {
+      const btn = document.createElement("button");
+      btn.className = "net-item" + (n.ssid === s.wifi_ssid ? " current" : "");
+      const nbars = n.rssi >= -50 ? 4 : n.rssi >= -60 ? 3 : n.rssi >= -70 ? 2 : 1;
+      btn.innerHTML = '<div class="wifi-bars s' + nbars + '"><span></span><span></span><span></span><span></span></div>'
+        + '<span class="nn">' + (n.ssid || "Hidden") + '</span>'
+        + (n.secure ? '<span class="nl">🔒</span>' : '')
+        + '<span class="nr">' + n.rssi + ' dBm</span>';
+      btn.addEventListener("click", () => {
+        $("#wfSsid").value = n.ssid;
+        $("#wfPass").value = "";
+        $("#wifiManual").open = true;
+        $("#wfPass").focus();
+      });
+      list.appendChild(btn);
+    });
+  }
+
+  function scanWifi() {
+    wifiScanning = true;
+    renderWifiDialog();
+    if (conn === "demo") {
+      setTimeout(() => {
+        wifiNetworks = [
+          { ssid: "HomeWiFi_5G", rssi: -42, secure: true },
+          { ssid: "HomeWiFi_2.4G", rssi: -55, secure: true },
+          { ssid: "Neighbor_Net", rssi: -68, secure: true },
+          { ssid: "CoffeeShop", rssi: -73, secure: false },
+          { ssid: "IoT_Network", rssi: -78, secure: true },
+        ];
+        wifiScanning = false;
+        renderWifiDialog();
+      }, 2000);
+    } else if (client && client.connected) {
+      client.publish(base() + "/cmd", "WIFI_SCAN", { qos: 1 });
+      setTimeout(() => { if (wifiScanning) { wifiScanning = false; renderWifiDialog(); toast("Scan timed out. Device may not support scanning."); } }, 15000);
+    } else {
+      wifiScanning = false; renderWifiDialog();
+      toast("Not connected.");
+    }
+  }
+
+  function applyWifi() {
+    const ssid = $("#wfSsid").value.trim();
+    const pass = $("#wfPass").value;
+    if (!ssid) { toast("Enter a WiFi network name."); return; }
+    const payload = JSON.stringify({ ssid, pass });
+    if (conn === "demo") {
+      toast("Demo: WiFi would be set to " + ssid);
+    } else if (client && client.connected) {
+      client.publish(base() + "/cmd", "WIFI_SET:" + payload, { qos: 1 });
+      toast("WiFi credentials sent to device. It will restart.");
+    } else {
+      toast("Not connected. Cannot send WiFi credentials.");
+    }
+  }
+
+  $("#wifiCard").addEventListener("click", () => {
+    renderWifiDialog();
+    if (wDlg.showModal) wDlg.showModal(); else wDlg.setAttribute("open", "");
+  });
+  $("#scanBtn").addEventListener("click", scanWifi);
+  $("#wfApply").addEventListener("click", applyWifi);
+  $("#wifiClose").addEventListener("click", () => wDlg.close());
+
+  // ---------- start ----------
+  connect();
+})();
+</script>
+</body>
+</html>
