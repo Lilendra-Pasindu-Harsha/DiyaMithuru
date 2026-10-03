@@ -2,7 +2,7 @@
 
 > **Technology with Compassion. For a More Inclusive Tomorrow.**
 
-DiyaMithuru is an **ESP32-based smart liquid filling assistant** developed as part of the **Engineering Product Design module at General Sir John Kotelawala Defence University (KDU), Sri Lanka**.
+DiyaMithuru is an **ESP32-based smart liquid filling assistant** developed as part of the **Engineering Product Design module at General Sir John Kotelawala Defence University , Sri Lanka**.
 
 The system is designed primarily for **visually impaired users**, with the goal of making everyday liquid filling safer, easier, and more independent.
 
@@ -71,3 +71,5 @@ Wait 2 Seconds
 MLX90614 Measures Drink Temperature
    ↓
 Status Published Through MQTT
+
+Do you want watch all click ----- https://drive.google.com/drive/folders/1cJ1TSZ0RsK_wuHSQsSrhiei4Du43ArKO?usp=drive_link
