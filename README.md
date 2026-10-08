@@ -12,7 +12,7 @@ Developed by:
 - **Dinuth**
 
 ---
-Do you want watch all click ----- https://drive.google.com/drive/folders/1cJ1TSZ0RsK_wuHSQsSrhiei4Du43ArKO?usp=drive_link 
+Do you want watch all click  https://drive.google.com/drive/folders/1cJ1TSZ0RsK_wuHSQsSrhiei4Du43ArKO?usp=drive_link 
 
 ## 🌟 Project Overview
 
