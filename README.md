@@ -1,76 +1,115 @@
-# 💧 DiyaMithuru – Smart Liquid Filling Assistant
+<h1 align="center">💧 DiyaMithuru</h1>
 
-> **Technology with Compassion. For a More Inclusive Tomorrow.**
+<p align="center">
+  Smart Liquid Filling Assistant
+</p>
 
-DiyaMithuru is an **ESP32-based smart liquid filling assistant** developed as part of the **Engineering Product Design module at General Sir John Kotelawala Defence University , Sri Lanka**.
+<p align="center">
+  Technology with Compassion. For a More Inclusive Tomorrow.
+</p>
 
-The system is designed primarily for **visually impaired users**, with the goal of making everyday liquid filling safer, easier, and more independent.
+<p align="center">
+  <img src="https://img.shields.io/badge/ESP32-E7352C?style=for-the-badge&logo=espressif&logoColor=white" alt="ESP32">
+  <img src="https://img.shields.io/badge/Arduino-00878F?style=for-the-badge&logo=arduino&logoColor=white" alt="Arduino">
+  <img src="https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=mqtt&logoColor=white" alt="MQTT">
+  <img src="https://img.shields.io/badge/HiveMQ_Cloud-FFC000?style=for-the-badge&logo=hivemq&logoColor=black" alt="HiveMQ Cloud">
+</p>
 
-Developed by:
-
-- **Pasindu**
-- **Dinuth**
-
----
-Do you want watch all click  https://drive.google.com/drive/folders/1cJ1TSZ0RsK_wuHSQsSrhiei4Du43ArKO?usp=drive_link 
-
-## 🌟 Project Overview
-
-For many people, filling a cup is a simple daily activity. However, visually impaired users, elderly users, and people who require daily assistance may face challenges such as:
-
-- Difficulty identifying the liquid level
-- Accidental spills
-- Unnecessary water wastage
-- Safety concerns when handling higher-temperature liquids
-- Dependence on another person
-
-DiyaMithuru addresses these challenges through an embedded automatic filling system with liquid-level monitoring, temperature sensing, remote status monitoring, and user control.
+<p align="center">
+  <a href="https://drive.google.com/drive/folders/1cJ1TSZ0RsK_wuHSQsSrhiei4Du43ArKO?usp=drive_link">
+    📂 Explore Project Photos & Videos
+  </a>
+</p>
 
 ---
 
-## ✨ Key Features
+## 📌 Overview
 
-- Automatic cup detection
-- Automatic liquid filling
-- Automatic refill when the liquid level becomes low
-- Pump stops when the cup reaches the full threshold
-- Pump stops immediately when the cup is removed
-- Liquid-level monitoring using an ultrasonic sensor
-- Temperature monitoring using the **MLX90614 IR temperature sensor**
-- Manual **ON / STOP / FILL / TEMP** commands
-- Wi-Fi setup using **WiFiManager**
-- MQTT communication using **HiveMQ Cloud**
-- Live device status on the web application
-- Spoken announcements through the user interface
-- Pump safety timeout
-- Sensor fault handling
-- Wi-Fi credential reset function
+An ESP32-based liquid filling assistant designed primarily for visually impaired users, supporting safer and more independent everyday use.
 
----
+Developed for the Engineering Product Design module at General Sir John Kotelawala Defence University, Sri Lanka.
 
-## ⚙️ How the System Works
+## ✨ Features
+
+| Automatic Filling | Monitoring & Control |
+|---|---|
+| Cup detection | Live web status |
+| Liquid-level sensing | MQTT communication |
+| Automatic low-level refill | Spoken announcements |
+| Stop when full or cup removed | ON / STOP / FILL / TEMP commands |
+| Pump safety timeout | Contactless temperature monitoring |
+
+## ⚙️ How It Works
 
 ```text
 Place Cup
-   ↓
+    ↓
 Limit Switch Detects Cup
-   ↓
-Ultrasonic Sensor Measures Liquid Level
-   ↓
-ESP32 Processes Sensor Data
-   ↓
-Pump Starts
-   ↓
-Cup Fills
-   ↓
-Full Threshold Reached
-   ↓
-Pump Stops
-   ↓
+    ↓
+Ultrasonic Sensor Checks Level
+    ↓
+ESP32 Starts Pump
+    ↓
+Full Threshold Reached → Pump Stops
+    ↓
 Wait 2 Seconds
-   ↓
-MLX90614 Measures Drink Temperature
-   ↓
-Status Published Through MQTT
+    ↓
+Measure Drink Temperature
+    ↓
+Publish Status via MQTT
+```
 
+## 🧰 Technology Stack
 
+<p>
+  <img src="https://img.shields.io/badge/ESP32-E7352C?style=for-the-badge&logo=espressif&logoColor=white" alt="ESP32">
+  <img src="https://img.shields.io/badge/Arduino-00878F?style=for-the-badge&logo=arduino&logoColor=white" alt="Arduino">
+  <img src="https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=mqtt&logoColor=white" alt="MQTT">
+  <img src="https://img.shields.io/badge/HiveMQ_Cloud-FFC000?style=for-the-badge&logo=hivemq&logoColor=black" alt="HiveMQ Cloud">
+  <img src="https://img.shields.io/badge/WiFiManager-0078D4?style=for-the-badge&logo=wifi&logoColor=white" alt="WiFiManager">
+</p>
+
+## 🔌 Hardware
+
+| Component | Purpose |
+|---|---|
+| ESP32 | Main controller and Wi-Fi |
+| Limit Switch | Cup detection |
+| Ultrasonic Sensor | Liquid-level monitoring |
+| MLX90614 | IR temperature sensing |
+| Pump | Automatic liquid dispensing |
+
+## 🌐 Connectivity
+
+```text
+Sensors → ESP32 ↔ HiveMQ Cloud ↔ Web Application
+             ↓
+         Pump Control
+```
+
+- WiFiManager setup
+- Remote commands and live status
+- Wi-Fi credential reset
+
+## 🛡️ Safety Features
+
+- Stops filling when the cup is removed
+- Stops at the full threshold
+- Pump timeout protection
+- Sensor fault handling
+- Manual STOP command
+
+## 👨‍💻 Team
+
+- Pasindu
+- Dinuth
+
+Engineering Product Design  
+General Sir John Kotelawala Defence University  
+Sri Lanka 🇱🇰
+
+---
+
+<p align="center">
+  💧 DiyaMithuru · Supporting Independence Through Technology
+</p>
