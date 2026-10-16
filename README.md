@@ -17,7 +17,7 @@
 
 <p align="center">
   <a href="https://drive.google.com/drive/folders/1cJ1TSZ0RsK_wuHSQsSrhiei4Du43ArKO?usp=drive_link">
-    📂 Explore Project Photos & Videos
+    📂   Explore Project Photos & Videos
   </a>
 </p>
 
