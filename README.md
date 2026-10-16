@@ -140,7 +140,8 @@ Removing the cup stops the pump immediately.
 
 ## 👨‍💻 Team
 
-Pasindu · Dinuth
+·Pasindu 
+·Dinuth
 
 Engineering Product Design  
 General Sir John Kotelawala Defence University  
